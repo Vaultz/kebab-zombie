@@ -4,30 +4,116 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
+	private Animator animPlayer;
 
+	void Start(){
+
+		animPlayer = GetComponent<Animator> ();
+
+		BoxCollider2D[] colliders = GetComponentsInChildren<BoxCollider2D>();
+		foreach( BoxCollider2D comp in colliders )
+		{
+			comp.enabled = false ;
+		}
+
+	}
 
 	// Update is called once per frame
 	void Update () {
-		
-		int horizontal = 0;
-		int vertical = 0; 
 
+
+		// RUN 
 		if (Input.GetKey (KeyCode.Z)) {		
+			animPlayer.SetBool ("walkUp", true);
 			StartCoroutine (forward(0.05f));
 		}
+		if (Input.GetKeyUp (KeyCode.Z)) {
+			animPlayer.SetBool ("walkUp", false);
+		}
 
+		//BACK
 		if (Input.GetKey (KeyCode.S)) {
+			animPlayer.SetBool ("walkDown", true);
 			StartCoroutine (back(0.05f));
 		}
+		if (Input.GetKeyUp (KeyCode.S)) {
+			animPlayer.SetBool ("walkDown", false);
+		}
 
+		//RIGHT
 		if (Input.GetKey (KeyCode.D)) {
+			animPlayer.SetBool ("WalkRight", true);
 			StartCoroutine (right(0.05f));
 		}
+		if (Input.GetKeyUp (KeyCode.D)) {
+			animPlayer.SetBool ("WalkRight", false);
+		}
 
+		//LEFT
 		if (Input.GetKey (KeyCode.Q)) {
+			animPlayer.SetBool ("walkLeft", true);
 			StartCoroutine (left(0.05f));
 		}
+		if (Input.GetKeyUp (KeyCode.Q)) {
+			animPlayer.SetBool ("walkLeft", false);
+		}
+
+
+		//ATTACK TOP
+		if (Input.GetKeyDown (KeyCode.UpArrow)) {
+			StartCoroutine (GestionCollider ("colider-top"));
+			animPlayer.SetBool ("attackTop", true);
+		}
+		if (Input.GetKeyUp (KeyCode.UpArrow)) {
+			animPlayer.SetBool ("attackTop", false);
+		}
+
+		//ATTACK BOTTOM
+		if (Input.GetKeyDown (KeyCode.DownArrow)) {
+			StartCoroutine (GestionCollider ("colider-bottom"));
+			animPlayer.SetBool ("attackBottom", true);
+		}
+		if (Input.GetKeyUp (KeyCode.DownArrow)) {
+			animPlayer.SetBool ("attackBottom", false);
+		}
+
+		//ATTACK LEFT
+		if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+			StartCoroutine (GestionCollider ("colider-left"));
+			animPlayer.SetBool ("attackLeft", true);
+		}
+		if (Input.GetKeyUp (KeyCode.LeftArrow)) {
+			animPlayer.SetBool ("attackLeft", false);
+		}
+
+		//ATTACHE RIGHT
+		if (Input.GetKeyDown (KeyCode.RightArrow)) {
+			StartCoroutine (GestionCollider ("colider-right"));
+			animPlayer.SetBool ("attackRight", true);
+		}
+		if (Input.GetKeyUp (KeyCode.RightArrow)) {
+			animPlayer.SetBool ("attackRight", false);
+		}
 	}
+
+
+	IEnumerator GestionCollider(string arrow){
+		
+		BoxCollider2D[] colliders = GetComponentsInChildren<BoxCollider2D>();
+		BoxCollider2D CurrentComp = null;
+
+		foreach( BoxCollider2D comp in colliders )
+		{
+			if(comp.name==arrow){
+				comp.enabled = true;
+				CurrentComp = comp;
+				break;
+			}
+		}	
+		yield return new WaitForSeconds (0.1f);
+		CurrentComp.enabled = false;
+	}
+
 
 	IEnumerator forward(float time)
 	{
