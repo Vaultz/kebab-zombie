@@ -8,8 +8,8 @@ public class Player : MonoBehaviour {
 
 	void Start(){
 
+		//hidden collider player (attack collider)
 		animPlayer = GetComponent<Animator> ();
-
 		BoxCollider2D[] colliders = GetComponentsInChildren<BoxCollider2D>();
 		foreach( BoxCollider2D comp in colliders )
 		{
@@ -17,6 +17,18 @@ public class Player : MonoBehaviour {
 		}
 
 	}
+
+
+	void OnCollisionEnter2D(Collision2D coll) {
+
+		print ("mob hit");
+
+		if (coll.gameObject.tag == "Enemy") {
+			Destroy (gameObject);
+
+		}
+	}
+
 
 	// Update is called once per frame
 	void Update () {
@@ -96,7 +108,7 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-
+	//function for attack
 	IEnumerator GestionCollider(string arrow){
 		
 		BoxCollider2D[] colliders = GetComponentsInChildren<BoxCollider2D>();
@@ -114,7 +126,7 @@ public class Player : MonoBehaviour {
 		CurrentComp.enabled = false;
 	}
 
-
+	//function for move top
 	IEnumerator forward(float time)
 	{
 		RaycastHit2D hit = Physics2D.Raycast(transform.position,Vector2.up); 
@@ -130,6 +142,7 @@ public class Player : MonoBehaviour {
 
 	}
 
+	//function for move bottome
 	IEnumerator back(float time)
 	{
 		RaycastHit2D hit = Physics2D.Raycast(transform.position,Vector2.down); 
@@ -144,6 +157,7 @@ public class Player : MonoBehaviour {
 		}
 	}
 
+	//function for move right
 	IEnumerator right(float time)
 	{
 		RaycastHit2D hit = Physics2D.Raycast(transform.position,Vector2.right); 
@@ -158,6 +172,7 @@ public class Player : MonoBehaviour {
 		}
 	}
 
+	//function for move left
 	IEnumerator left(float time)
 	{
 		RaycastHit2D hit = Physics2D.Raycast(transform.position,Vector2.left); 
