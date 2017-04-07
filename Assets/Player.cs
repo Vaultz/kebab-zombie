@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour {
 
@@ -23,7 +24,10 @@ public class Player : MonoBehaviour {
 		BoxCollider2D[] colliders = GetComponentsInChildren<BoxCollider2D>();
 		foreach( BoxCollider2D comp in colliders )
 		{
-			comp.enabled = false ;
+			if (comp.name != "personnage") {
+				comp.enabled = false ;
+
+			}
 		}
 
 	}
@@ -45,7 +49,7 @@ public class Player : MonoBehaviour {
 				
 				//Debug.Log ("Premier mouvement");
 				// update the camera position
-				if (playerPosition.x != 0 || playerPosition.y != 0) {
+				//if (playerPosition.x != 0 || playerPosition.y != 0) {
 					// get the player & camera position
 					// move the camera
 					Debug.Log ("N MOUVEMENT : PLAYERPOS : " + playerPosition + " ; CAMERAPOS : " + cameraPosition);
@@ -58,7 +62,7 @@ public class Player : MonoBehaviour {
 							
 							currentCamera.transform.position += Vector3.right * 20f;
 							//StartCoroutine(MoveCamera(currentCamera.transform.position + 20*Vector3.right));
-						} else {
+						} else if (playerPosition.x < cameraPosition.x) {
 							Debug.Log ("Décalage vers la gauche ");
 							
 							currentCamera.transform.position += Vector3.left * 20f;
@@ -70,7 +74,7 @@ public class Player : MonoBehaviour {
 							
 							currentCamera.transform.position += Vector3.up * 20f;
 							//StartCoroutine(MoveCamera(currentCamera.transform.position + 20*Vector3.up));
-						} else {
+						} else if (playerPosition.y < cameraPosition.y)  {
 							Debug.Log ("Décalage vers le bas ");
 							
 							currentCamera.transform.position += Vector3.down * 20f;
@@ -78,8 +82,7 @@ public class Player : MonoBehaviour {
 						}
 						
 					}
-				}
-				//tempPosition = playerPosition;
+				//}
 			}
 
 			// other movements : we compare the old position with the new one
@@ -89,24 +92,26 @@ public class Player : MonoBehaviour {
 				float newX = Mathf.Abs (tempPosition.x) - Mathf.Abs (playerPosition.x);
 				float newY = Mathf.Abs (tempPosition.y) - Mathf.Abs (playerPosition.y);
 				//Debug.Log ("ABS X :" + Mathf.Abs(newX) + " ABS Y : " + Mathf.Abs(newY));
-				Debug.Log(tempPosition);
+				//Debug.Log(tempPosition);
 				if (Mathf.Abs(newX) > Mathf.Abs(newY)) {
 					Debug.Log ("DECALAGE X");
 
 					if (playerPosition.x > tempPosition.x) {
 						Debug.Log ("X+");
 						currentCamera.transform.position += Vector3.right * 20f;
-					} else {
+					} 
+					else if (playerPosition.x < tempPosition.x) {
 						Debug.Log ("X-");
 						currentCamera.transform.position += Vector3.left * 20f;
 					}
 				} else {
 					Debug.Log ("DECALAGE Y");
 
-					if ( playerPosition.y > tempPosition.y) {
+					if (playerPosition.y > tempPosition.y) {
 						Debug.Log ("Y+");
 						currentCamera.transform.position += Vector3.up * 20f;
-					} else {
+					} 
+					else if (playerPosition.y < tempPosition.y) {
 						Debug.Log ("Y-");
 						currentCamera.transform.position += Vector3.down * 20f;
 					}
@@ -115,8 +120,6 @@ public class Player : MonoBehaviour {
 			}
 			tempPosition = playerPosition;
 		}
-
-
 
 
 		// RUN 

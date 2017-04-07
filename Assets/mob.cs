@@ -33,6 +33,7 @@ public class mob : MonoBehaviour {
 		myTransform = GetComponent<Transform> ();
 		oldposition = myTransform.position;
 		animPlayer = GetComponent<Animator> ();
+		speed = speed * 1.5f;
 	}
 
 	void Update(){

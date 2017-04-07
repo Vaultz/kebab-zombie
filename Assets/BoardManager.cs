@@ -40,6 +40,7 @@ public class BoardManager : MonoBehaviour {
 		placedRooms = new List<GameObject> ();
 
 		// entryRoom
+		Debug.Log("On instancie une "+regularRooms[0]);
 		GameObject lastRoom = Instantiate (regularRooms[0], Vector2.zero, Quaternion.identity, transform); 	// transform : global position, rotation & scale
 		//if(lastRoom != null) Debug.Log("1 room created!");
 		lastRoom.name = ("i : " + 0);
@@ -183,10 +184,8 @@ public class BoardManager : MonoBehaviour {
 
 		}
 
-
-
-
 	}
+
 
 	// Get un new position for the currentRoom, depending on the given cardinalPoint
 	private Vector2 GetCurrentRoomPosition(Vector2 currentRoomPosition, char cardinalPoint) {
@@ -225,7 +224,9 @@ public class BoardManager : MonoBehaviour {
 
 	void Update () 
 	{
-		if(Input.GetKeyDown(KeyCode.R)) Reroll();
+
+		if (Input.GetKeyDown (KeyCode.R))
+			SceneManager.LoadScene (SceneManager.GetActiveScene().name);
 	}
 
 
