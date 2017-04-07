@@ -90,6 +90,7 @@
 'Assets/EmptyRoom.cs'
 'Assets/Player.cs'
 'Assets/bulletBehaviour.cs'
+'Assets/deathCharacter.cs'
 'Assets/key.cs'
 'Assets/mob.cs'
 'Assets/tower.cs'
