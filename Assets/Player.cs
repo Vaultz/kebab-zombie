@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
+	private Camera currentCamera;
 	private Animator animPlayer;
 
-	void Start(){
+	private Vector2 tempPosition;
+
+
+	void Start() {
+
+		currentCamera = GameObject.Find ("Main Camera").gameObject.GetComponent<Camera>() ;
 
 		//hidden collider player (attack collider)
 		animPlayer = GetComponent<Animator> ();
@@ -29,9 +35,97 @@ public class Player : MonoBehaviour {
 		}
 	}
 
+	void MoveCamera(Vector2 playerPosition, Vector2 cameraPosition, char direction) {
+
+	}
 
 	// Update is called once per frame
 	void Update () {
+
+		Vector2 playerPosition, cameraPosition;
+		cameraPosition = currentCamera.transform.position;
+		playerPosition = (Vector2) gameObject.transform.position;
+
+		if (!(gameObject.GetComponentInChildren<SpriteRenderer> ().isVisible)) {
+
+
+			// first movement
+			if (cameraPosition.x == 0 && cameraPosition.y == 0) {
+				
+				//Debug.Log ("Premier mouvement");
+				// update the camera position
+				if (playerPosition.x != 0 || playerPosition.y != 0) {
+					// get the player & camera position
+					// move the camera
+					Debug.Log ("N MOUVEMENT : PLAYERPOS : " + playerPosition + " ; CAMERAPOS : " + cameraPosition);
+					
+					// if (valeurabsolue)player.x > (valeurabsolue)player.y : décalage sur l'axe X
+					if (Mathf.Abs (playerPosition.x) > Mathf.Abs (playerPosition.y)) {
+						
+						if (playerPosition.x > cameraPosition.x) {
+							Debug.Log ("Décalage vers la droite ");
+							
+							currentCamera.transform.position += Vector3.right * 20f;
+							//StartCoroutine(MoveCamera(currentCamera.transform.position + 20*Vector3.right));
+						} else {
+							Debug.Log ("Décalage vers la gauche ");
+							
+							currentCamera.transform.position += Vector3.left * 20f;
+							//StartCoroutine(MoveCamera(currentCamera.transform.position + 20*Vector3.left));
+						}
+					} else {
+						if (playerPosition.y > cameraPosition.y) {
+							Debug.Log ("Décalage vers le haut ");
+							
+							currentCamera.transform.position += Vector3.up * 20f;
+							//StartCoroutine(MoveCamera(currentCamera.transform.position + 20*Vector3.up));
+						} else {
+							Debug.Log ("Décalage vers le bas ");
+							
+							currentCamera.transform.position += Vector3.down * 20f;
+							//StartCoroutine(MoveCamera(currentCamera.transform.position + 20*Vector3.down));
+						}
+						
+					}
+				}
+				//tempPosition = playerPosition;
+			}
+
+			// other movements : we compare the old position with the new one
+			else {
+				//Debug.Log ("OLD : " + tempPosition + " ; NEW : " + playerPosition);
+
+				float newX = Mathf.Abs (tempPosition.x) - Mathf.Abs (playerPosition.x);
+				float newY = Mathf.Abs (tempPosition.y) - Mathf.Abs (playerPosition.y);
+				//Debug.Log ("ABS X :" + Mathf.Abs(newX) + " ABS Y : " + Mathf.Abs(newY));
+				Debug.Log(tempPosition);
+				if (Mathf.Abs(newX) > Mathf.Abs(newY)) {
+					Debug.Log ("DECALAGE X");
+
+					if (playerPosition.x > tempPosition.x) {
+						Debug.Log ("X+");
+						currentCamera.transform.position += Vector3.right * 20f;
+					} else {
+						Debug.Log ("X-");
+						currentCamera.transform.position += Vector3.left * 20f;
+					}
+				} else {
+					Debug.Log ("DECALAGE Y");
+
+					if ( playerPosition.y > tempPosition.y) {
+						Debug.Log ("Y+");
+						currentCamera.transform.position += Vector3.up * 20f;
+					} else {
+						Debug.Log ("Y-");
+						currentCamera.transform.position += Vector3.down * 20f;
+					}
+				}
+
+			}
+			tempPosition = playerPosition;
+		}
+
+
 
 
 		// RUN 
@@ -105,6 +199,35 @@ public class Player : MonoBehaviour {
 		}
 		if (Input.GetKeyUp (KeyCode.RightArrow)) {
 			animPlayer.SetBool ("attackRight", false);
+		}
+	}
+
+	IEnumerator MoveCamera(Vector3 nextPosition) {
+
+		while (currentCamera.transform.position != nextPosition) {
+			currentCamera.transform.position = Vector3.Lerp (currentCamera.transform.position, nextPosition, Time.deltaTime);
+
+			/*
+			switch (direction) {
+			case 'n':
+				currentCamera.transform.position += 100f * Vector3.up * 20f;
+				break;
+
+			case 's':
+				currentCamera.transform.position += 0.1f * Vector3.down;
+				break;
+
+			case 'e':
+				Debug.Log ("EST");
+				break;
+
+			case 'o':
+				Debug.Log ("OUEST");
+				currentCamera.transform.position += 0.1f * Vector3.left;
+				break;
+
+			}*/
+			yield return null;
 		}
 	}
 
@@ -185,5 +308,9 @@ public class Player : MonoBehaviour {
 				yield return null;
 			}
 		}
+	}
+
+	void OnBecameInvisible() {
+		Debug.Log ("TEST");
 	}
 }
