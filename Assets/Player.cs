@@ -5,6 +5,10 @@ using UnityEngine;
 public class Player : MonoBehaviour {
 
 	private Animator animPlayer;
+	public ParticleSystem attackUp;
+	public ParticleSystem attackBack;
+	public ParticleSystem attackLeft;
+	public ParticleSystem attackRight;
 
 	void Start(){
 
@@ -13,22 +17,12 @@ public class Player : MonoBehaviour {
 		BoxCollider2D[] colliders = GetComponentsInChildren<BoxCollider2D>();
 		foreach( BoxCollider2D comp in colliders )
 		{
-			comp.enabled = false ;
+			if (comp.name != "personnage") {
+				comp.enabled = false;
+			}
 		}
 
 	}
-
-
-	void OnCollisionEnter2D(Collision2D coll) {
-
-		print ("mob hit");
-
-		if (coll.gameObject.tag == "Enemy") {
-			Destroy (gameObject);
-
-		}
-	}
-
 
 	// Update is called once per frame
 	void Update () {
@@ -75,6 +69,7 @@ public class Player : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.UpArrow)) {
 			StartCoroutine (GestionCollider ("colider-top"));
 			animPlayer.SetBool ("attackTop", true);
+			attackUp.Play ();
 		}
 		if (Input.GetKeyUp (KeyCode.UpArrow)) {
 			animPlayer.SetBool ("attackTop", false);
@@ -84,6 +79,7 @@ public class Player : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.DownArrow)) {
 			StartCoroutine (GestionCollider ("colider-bottom"));
 			animPlayer.SetBool ("attackBottom", true);
+			attackBack.Play ();
 		}
 		if (Input.GetKeyUp (KeyCode.DownArrow)) {
 			animPlayer.SetBool ("attackBottom", false);
@@ -93,6 +89,7 @@ public class Player : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.LeftArrow)) {
 			StartCoroutine (GestionCollider ("colider-left"));
 			animPlayer.SetBool ("attackLeft", true);
+			attackLeft.Play ();
 		}
 		if (Input.GetKeyUp (KeyCode.LeftArrow)) {
 			animPlayer.SetBool ("attackLeft", false);
@@ -102,6 +99,7 @@ public class Player : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.RightArrow)) {
 			StartCoroutine (GestionCollider ("colider-right"));
 			animPlayer.SetBool ("attackRight", true);
+			attackRight.Play ();
 		}
 		if (Input.GetKeyUp (KeyCode.RightArrow)) {
 			animPlayer.SetBool ("attackRight", false);
