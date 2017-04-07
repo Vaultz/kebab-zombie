@@ -50,7 +50,11 @@
      <Compile Include="Assets\CameraScript.cs" />
      <Compile Include="Assets\EmptyRoom.cs" />
      <Compile Include="Assets\Player.cs" />
+     <Compile Include="Assets\bulletBehaviour.cs" />
+     <Compile Include="Assets\deathCharacter.cs" />
+     <Compile Include="Assets\key.cs" />
      <Compile Include="Assets\mob.cs" />
+     <Compile Include="Assets\tower.cs" />
  <Reference Include="UnityEngine.Analytics">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>

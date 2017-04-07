@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
+	public ParticleSystem attackUp;
+	public ParticleSystem attackBack;
+	public ParticleSystem attackLeft;
+	public ParticleSystem attackRight;
+
 	private Camera currentCamera;
 	private Animator animPlayer;
-
 	private Vector2 tempPosition;
 
 
@@ -25,19 +29,6 @@ public class Player : MonoBehaviour {
 	}
 
 
-	void OnCollisionEnter2D(Collision2D coll) {
-
-		print ("mob hit");
-
-		if (coll.gameObject.tag == "Enemy") {
-			Destroy (gameObject);
-
-		}
-	}
-
-	void MoveCamera(Vector2 playerPosition, Vector2 cameraPosition, char direction) {
-
-	}
 
 	// Update is called once per frame
 	void Update () {
@@ -164,11 +155,11 @@ public class Player : MonoBehaviour {
 			animPlayer.SetBool ("walkLeft", false);
 		}
 
-
 		//ATTACK TOP
 		if (Input.GetKeyDown (KeyCode.UpArrow)) {
 			StartCoroutine (GestionCollider ("colider-top"));
 			animPlayer.SetBool ("attackTop", true);
+			attackUp.Play ();
 		}
 		if (Input.GetKeyUp (KeyCode.UpArrow)) {
 			animPlayer.SetBool ("attackTop", false);
@@ -178,6 +169,7 @@ public class Player : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.DownArrow)) {
 			StartCoroutine (GestionCollider ("colider-bottom"));
 			animPlayer.SetBool ("attackBottom", true);
+			attackBack.Play ();
 		}
 		if (Input.GetKeyUp (KeyCode.DownArrow)) {
 			animPlayer.SetBool ("attackBottom", false);
@@ -187,6 +179,7 @@ public class Player : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.LeftArrow)) {
 			StartCoroutine (GestionCollider ("colider-left"));
 			animPlayer.SetBool ("attackLeft", true);
+			attackLeft.Play ();
 		}
 		if (Input.GetKeyUp (KeyCode.LeftArrow)) {
 			animPlayer.SetBool ("attackLeft", false);
@@ -196,40 +189,15 @@ public class Player : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.RightArrow)) {
 			StartCoroutine (GestionCollider ("colider-right"));
 			animPlayer.SetBool ("attackRight", true);
+			attackRight.Play ();
 		}
 		if (Input.GetKeyUp (KeyCode.RightArrow)) {
 			animPlayer.SetBool ("attackRight", false);
 		}
+		
 	}
 
-	IEnumerator MoveCamera(Vector3 nextPosition) {
 
-		while (currentCamera.transform.position != nextPosition) {
-			currentCamera.transform.position = Vector3.Lerp (currentCamera.transform.position, nextPosition, Time.deltaTime);
-
-			/*
-			switch (direction) {
-			case 'n':
-				currentCamera.transform.position += 100f * Vector3.up * 20f;
-				break;
-
-			case 's':
-				currentCamera.transform.position += 0.1f * Vector3.down;
-				break;
-
-			case 'e':
-				Debug.Log ("EST");
-				break;
-
-			case 'o':
-				Debug.Log ("OUEST");
-				currentCamera.transform.position += 0.1f * Vector3.left;
-				break;
-
-			}*/
-			yield return null;
-		}
-	}
 
 	//function for attack
 	IEnumerator GestionCollider(string arrow){
@@ -310,7 +278,5 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	void OnBecameInvisible() {
-		Debug.Log ("TEST");
-	}
+
 }
